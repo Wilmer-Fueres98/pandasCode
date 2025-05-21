@@ -1,1 +1,1 @@
-print("mi primer repositorio - WILMER ")
+print("mi primer repositorio - WILMER  y Wendy")
