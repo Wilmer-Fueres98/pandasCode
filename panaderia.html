@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot de Panadería 🥖</title>
+  <style>
+    body {
+      background-color: #f3e5ab;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .chat-container {
+      background: #fffaf0;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 420px;
+      margin: 40px auto;
+      display: flex;
+      flex-direction: column;
+      height: 600px;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background-color: #8d6e63;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 20px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background-color: #fff8e1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message {
+      max-width: 75%;
+      margin: 5px 0;
+      padding: 10px 15px;
+      border-radius: 20px;
+      font-size: 15px;
+      line-height: 1.4;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .user {
+      align-self: flex-end;
+      background-color: #d7ccc8;
+    }
+
+    .bot {
+      align-self: flex-start;
+      background-color: #ffe0b2;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #eee;
+      padding: 10px;
+      background-color: white;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .chat-input button {
+      margin-left: 10px;
+      background-color: #8d6e63;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      🥐 Chatbot de Panadería
+    </div>
+    <div id="chat" class="chat-messages"></div>
+    <div class="chat-input">
+      <input type="text" id="inputUsuario" placeholder="Escribe tu mensaje...">
+      <button onclick="enviarMensaje()">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('inputUsuario');
+
+    function obtenerAmbiente() {
+      const fecha = new Date();
+      const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+      const dia = dias[fecha.getDay()];
+      const hoy = `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
+      const temp = Math.floor(Math.random() * (32 - 18 + 1)) + 18;
+      return `🗓️ Hoy es ${dia}, ${hoy} y la temperatura es de ${temp}°C. Un buen día para un pan calientito 🥖.`;
+    }
+
+    function mostrarMensaje(texto, tipo) {
+      const mensaje = document.createElement('div');
+      mensaje.className = `message ${tipo}`;
+      mensaje.textContent = texto;
+      chat.appendChild(mensaje);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function responder(mensaje) {
+      mensaje = mensaje.toLowerCase();
+
+      const respuestas = {
+        "hola": "¡Hola! Bienvenido a nuestra panadería artesanal 🥐",
+        "que panes tienen": "Tenemos baguettes, bollos, croissants, pan integral y pan dulce.",
+        "horario": "Abrimos de lunes a sábado, de 7:00 am a 7:00 pm.",
+        "hacen entregas": "Sí, realizamos entregas a domicilio dentro del área local.",
+        "precios": "Nuestros precios varían desde $1 hasta $4 por pieza.",
+        "tienen promociones": "¡Sí! Hoy hay 3x2 en pan dulce 🍩.",
+        "quien te creó": "Fui horneado con amor por un estudiante de inteligencia artificial 😄",
+        "como estas": "Calientito y listo para servir 🍞 ¿Y tú?",
+        "ayuda": "Puedes preguntarme por productos, horarios, entregas o precios.",
+        "gracias": "¡Gracias a ti! Que disfrutes tu pan 🧡",
+        "salir": "¡Hasta pronto! Vuelve por más delicias cuando quieras 🍪"
+      };
+
+      if (respuestas[mensaje]) {
+        mostrarMensaje(respuestas[mensaje], "bot");
+        if (mensaje === "salir") {
+          input.disabled = true;
+        }
+      } else {
+        mostrarMensaje("Lo siento, no entendí eso. ¿Podrías escribirlo de otra forma? 😊", "bot");
+      }
+    }
+
+    function enviarMensaje() {
+      const texto = input.value.trim();
+      if (texto === "") return;
+      mostrarMensaje(texto, "user");
+      responder(texto);
+      input.value = "";
+    }
+
+    // Mensajes iniciales
+    mostrarMensaje("¡Bienvenido a la panadería El Buen Pan! 🍞", "bot");
+    mostrarMensaje(obtenerAmbiente(), "bot");
+    mostrarMensaje("Pregúntame por tipos de pan, horarios o promociones. Escribe 'salir' para terminar.", "bot");
+  </script>
+
+</body>
+</html>
