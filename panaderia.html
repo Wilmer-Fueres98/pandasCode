@@ -5,7 +5,7 @@
   <title>Chatbot de Panadería 🥖</title>
   <style>
     body {
-      background-color: #f3e5ab;
+      background: linear-gradient(to right, #f8f4e3, #f3e5ab);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       flex-direction: column;
@@ -15,80 +15,97 @@
     }
 
     .chat-container {
-      background: #fffaf0;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background: #fff8dc;
+      border-radius: 20px;
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
       width: 90%;
-      max-width: 420px;
-      margin: 40px auto;
+      max-width: 440px;
+      margin: 50px auto;
       display: flex;
       flex-direction: column;
       height: 600px;
       overflow: hidden;
+      border: 1px solid #d2b48c;
     }
 
     .chat-header {
-      background-color: #8d6e63;
+      background-color: #a67c52;
       color: white;
-      padding: 15px;
+      padding: 18px;
       text-align: center;
-      font-size: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
     .chat-messages {
       flex: 1;
-      padding: 15px;
+      padding: 20px;
       overflow-y: auto;
-      background-color: #fff8e1;
+      background: #fffaf0;
       display: flex;
       flex-direction: column;
     }
 
     .message {
       max-width: 75%;
-      margin: 5px 0;
-      padding: 10px 15px;
+      margin: 6px 0;
+      padding: 12px 18px;
       border-radius: 20px;
       font-size: 15px;
-      line-height: 1.4;
+      line-height: 1.5;
       animation: fadeIn 0.3s ease;
+      box-shadow: 2px 3px 8px rgba(0,0,0,0.08);
+      transition: all 0.2s ease;
     }
 
     .user {
       align-self: flex-end;
-      background-color: #d7ccc8;
+      background-color: #ffe4b5;
+      color: #5d4037;
     }
 
     .bot {
       align-self: flex-start;
-      background-color: #ffe0b2;
+      background-color: #fff3e0;
+      color: #4e342e;
     }
 
     .chat-input {
       display: flex;
-      border-top: 1px solid #eee;
-      padding: 10px;
-      background-color: white;
+      border-top: 1px solid #ddd;
+      padding: 12px;
+      background-color: #fdf6e3;
     }
 
     .chat-input input {
       flex: 1;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
+      padding: 12px;
+      border: 1px solid #c0a16b;
+      border-radius: 25px;
       outline: none;
       font-size: 14px;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .chat-input input:focus {
+      box-shadow: 0 0 5px #d2a679;
     }
 
     .chat-input button {
       margin-left: 10px;
-      background-color: #8d6e63;
+      background-color: #a67c52;
       color: white;
       border: none;
-      padding: 10px 16px;
-      border-radius: 20px;
+      padding: 10px 18px;
+      border-radius: 25px;
       cursor: pointer;
       font-weight: bold;
+      transition: background-color 0.2s ease;
+    }
+
+    .chat-input button:hover {
+      background-color: #8d6e63;
     }
 
     @keyframes fadeIn {
@@ -115,12 +132,17 @@
     const input = document.getElementById('inputUsuario');
 
     function obtenerAmbiente() {
-      const fecha = new Date();
-      const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-      const dia = dias[fecha.getDay()];
-      const hoy = `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
-      const temp = Math.floor(Math.random() * (32 - 18 + 1)) + 18;
-      return `🗓️ Hoy es ${dia}, ${hoy} y la temperatura es de ${temp}°C. Un buen día para un pan calientito 🥖.`;
+    const fecha = new Date();
+    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const dia = dias[fecha.getDay()];
+    const hoy = `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
+
+    const hora = fecha.getHours().toString().padStart(2, '0');
+    const minutos = fecha.getMinutes().toString().padStart(2, '0');
+    const horaActual = `${hora}:${minutos}`;
+
+    const temp = Math.floor(Math.random() * (32 - 18 + 1)) + 18;
+    return `🗓️ Hoy es ${dia}, ${hoy} la hora es: ${horaActual} y la temperatura es de ${temp}°C. Un buen día para un pan calientito 🥖.`;
     }
 
     function mostrarMensaje(texto, tipo) {
@@ -135,13 +157,13 @@
       mensaje = mensaje.toLowerCase();
 
       const respuestas = {
-        "hola": "¡Hola! Bienvenido a nuestra panadería artesanal 🥐",
+        "hola": "¡Hola! Bienvenido a nuestra panadería artesanal de Wilmer Fueres 🥐",
         "que panes tienen": "Tenemos baguettes, bollos, croissants, pan integral y pan dulce.",
         "horario": "Abrimos de lunes a sábado, de 7:00 am a 7:00 pm.",
         "hacen entregas": "Sí, realizamos entregas a domicilio dentro del área local.",
         "precios": "Nuestros precios varían desde $1 hasta $4 por pieza.",
         "tienen promociones": "¡Sí! Hoy hay 3x2 en pan dulce 🍩.",
-        "quien te creó": "Fui horneado con amor por un estudiante de inteligencia artificial 😄",
+        "quien te creo": "Fui horneado con amor por un estudiante de inteligencia artificial 😄",
         "como estas": "Calientito y listo para servir 🍞 ¿Y tú?",
         "ayuda": "Puedes preguntarme por productos, horarios, entregas o precios.",
         "gracias": "¡Gracias a ti! Que disfrutes tu pan 🧡",
@@ -166,6 +188,13 @@
       input.value = "";
     }
 
+    // Enviar con tecla Enter
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        enviarMensaje();
+      }
+    });
+
     // Mensajes iniciales
     mostrarMensaje("¡Bienvenido a la panadería El Buen Pan! 🍞", "bot");
     mostrarMensaje(obtenerAmbiente(), "bot");
@@ -174,3 +203,5 @@
 
 </body>
 </html>
+
+
